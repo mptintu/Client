@@ -1,0 +1,132 @@
+---
+swagger: "2.0"
+info:
+  description: "My Adoption Portal API"
+  version: "1.0.0"
+  title: "My Adoption Portal API"
+host: "localhost"
+basePath: "/v1"
+tags:
+- name: "Client"
+  description: "Manage Clients"
+schemes:
+- "https"
+- "http"
+
+paths:
+  /Client:
+    post:
+      tags:
+      - "Client"
+      summary: "Get the list of clients assigned to logged in case worker (ClientController@clientFullListing)"
+      description: "Get the list of clients assigned to logged in case worker"
+      operationId: "clientFullListing"
+      produces:
+      - "application/json"
+      consumes:
+      - application/json
+      parameters:
+      - in: "body"
+        name: "parameters"
+        required: true
+        schema:
+          $ref: "#/definitions/ClientInputParams"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/inline_response_200"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Error"
+        404:
+          description: "The specified resource was not found"
+          schema:
+            $ref: "#/definitions/Error"
+        default:
+          description: "unexpected error"
+          schema:
+            $ref: "#/definitions/errorModel"
+      security:
+      - api_key: []
+      x-swagger-router-controller: "Client"
+securityDefinitions:
+  api_key:
+    description: "JWT Token"
+    type: "apiKey"
+    name: "Authorization"
+    in: "header"
+definitions:
+  Error:
+    type: "object"
+    required:
+    - "code"
+    - "message"
+    properties:
+      code:
+        type: "string"
+      message:
+        type: "string"
+  ClientResponse:
+    type: "object"
+    properties:
+      Client name:
+        type: "string"
+        example: "Deon Davis"
+      phase:
+        type: "string"
+        example: "Placement"
+      login name:
+        type: "string"
+        example: "rolesmedia@media.com"
+  ClientInputParams:
+    type: "object"
+    required:
+    - "end"
+    - "start_qrycnt"
+    properties:
+      start_qrycnt:
+        type: "integer"
+        format: "int32"
+        example: 1
+      end:
+        type: "integer"
+        format: "int32"
+        example: 100
+  errorModel:
+    type: "object"
+    required:
+    - "code"
+    - "message"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+        example: 500
+      message:
+        type: "string"
+        example: "Unexpected error"
+  inline_response_200:
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+        example: 200
+      message:
+        type: "string"
+        example: "successful operation"
+      data:
+        $ref: "#/definitions/ClientResponse"
+responses:
+  NotFound:
+    description: "The specified resource was not found"
+    schema:
+      $ref: "#/definitions/Error"
+  Unauthorized:
+    description: "Unauthorized"
+    schema:
+      $ref: "#/definitions/Error"
+externalDocs:
+  description: "Adoption Center"
+  url: "http://myadoptionportal.com"
