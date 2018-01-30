@@ -12,9 +12,9 @@ tags:
 schemes:
 - "https"
 - "http"
-
 paths:
   /Client:
+    x-swagger-router-controller: "Client"
     post:
       tags:
       - "Client"
@@ -26,11 +26,10 @@ paths:
       consumes:
       - application/json
       parameters:
-      - in: "body"
-        name: "parameters"
-        required: true
-        schema:
-          $ref: "#/definitions/ClientInputParams"
+        - in: body
+          name: parameters          
+          schema:
+            $ref: "#/definitions/ClientInputParams"
       responses:
         200:
           description: "successful operation"
@@ -81,10 +80,10 @@ definitions:
         type: "string"
         example: "rolesmedia@media.com"
   ClientInputParams:
-    type: "object"
+    type: object
     required:
-    - "end"
-    - "start_qrycnt"
+      - end
+      - start_qrycnt
     properties:
       start_qrycnt:
         type: "integer"
@@ -94,6 +93,12 @@ definitions:
         type: "integer"
         format: "int32"
         example: 100
+      c_acc_key:
+        type: "string"
+        example: "-28354"
+      logged_userid:
+        type: "integer"
+        example: 17664
   errorModel:
     type: "object"
     required:
